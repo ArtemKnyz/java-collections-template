@@ -2,7 +2,11 @@ package com.epam.izh.rd.online.service;
 
 import com.epam.izh.rd.online.helper.Direction;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.*;
 
@@ -57,7 +61,9 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public List<String> getWords(String text) {
-        return emptyList();
+        return Stream.of(text)
+                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -70,6 +76,7 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public Set<String> getUniqueWords(String text) {
+
         return emptySet();
     }
 
