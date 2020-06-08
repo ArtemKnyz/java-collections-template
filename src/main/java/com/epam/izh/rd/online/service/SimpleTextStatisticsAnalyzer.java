@@ -2,14 +2,9 @@ package com.epam.izh.rd.online.service;
 
 import com.epam.izh.rd.online.helper.Direction;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Collections.*;
 
 /**
  * Совет:
@@ -113,6 +108,21 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public List<String> sortWordsByLength(String text, Direction direction) {
-        return emptyList();
+        List<String> str = Arrays.asList(text.split("(\\s|,|\\.|!|-|\")+"));
+
+        Comparator<String> sortUpLenthString = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.length() - o2.length();
+            }
+        };
+
+        if (direction.name().equals("ASC")) {
+            Collections.sort(str, sortUpLenthString);
+
+        } else {
+            str.sort((o1, o2) -> Integer.compare(o2.length(), o1.length()));
+        }
+        return str;
     }
 }
