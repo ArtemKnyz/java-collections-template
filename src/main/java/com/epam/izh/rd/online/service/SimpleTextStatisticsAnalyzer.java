@@ -77,7 +77,10 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
     @Override
     public Set<String> getUniqueWords(String text) {
 
-        return emptySet();
+        return Stream.of(text)
+                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+                .distinct()
+                .collect(Collectors.toSet());
     }
 
     /**
