@@ -5,6 +5,7 @@ import com.epam.izh.rd.online.helper.Direction;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -92,7 +93,14 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public Map<String, Integer> countNumberOfWordsRepetitions(String text) {
-        return emptyMap();
+
+        Map<String, Integer> unique = new TreeMap<String, Integer>();
+        String stringToArray[] = text.split("(\\s|,|\\.|!|-|\")+");
+
+        for (String str : stringToArray) {
+            unique.put(str, (unique.get(str) == null ? 1 : (unique.get(str) + 1)));
+        }
+        return unique;
     }
 
     /**
