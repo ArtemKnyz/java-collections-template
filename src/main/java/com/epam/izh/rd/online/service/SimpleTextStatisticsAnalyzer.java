@@ -54,7 +54,11 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countNumberOfUniqueWords(String text) {
-        return 0;
+        List<String> listOfDuplicateWords = Arrays.asList((text).split("(\\s|,|\\.|!|-|\")+"));
+        HashSet<String> uniqueWordsFromList = new HashSet<>();
+        uniqueWordsFromList.addAll(listOfDuplicateWords);
+
+        return uniqueWordsFromList.size();
     }
 
     /**
