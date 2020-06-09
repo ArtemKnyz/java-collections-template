@@ -15,38 +15,46 @@ import static java.util.Collections.*;
 public class StreamApiTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
     @Override
     public int countSumLengthOfWords(String text) {
-        return 0;
+        List<String> d = Arrays.asList(text).stream().collect(Collectors.toList());
+        Stream.of(text).collect(Collectors.toList()).size();
+
+        return d.size();
     }
 
     @Override
     public int countNumberOfWords(String text) {
-        List<String> listWordsFromText= Stream.of(text)
+        return (int) Stream.of(text)
                 .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
-                .collect(Collectors.toList());
-        return listWordsFromText.size();
+                .count();
     }
 
     @Override
     public int countNumberOfUniqueWords(String text) {
-        return 0;
+        return (int) Stream.of(text)
+                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+                .distinct()
+                .count();
     }
 
     @Override
     public List<String> getWords(String text) {
-        List<String> listWordsFromText= Stream.of(text)
+        return Stream.of(text)
                 .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
                 .collect(Collectors.toList());
-        return listWordsFromText;
     }
 
     @Override
     public Set<String> getUniqueWords(String text) {
-        return emptySet();
+        return Stream.of(text)
+                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+                .distinct()
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Map<String, Integer> countNumberOfWordsRepetitions(String text) {
-        return emptyMap();
+
+        return null;
     }
 
     @Override
