@@ -41,7 +41,10 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countNumberOfWords(String text) {
-        return 0;
+        List<String> listWordsFromText= Arrays.asList((text)
+                .split("(\\s|,|\\.|!|-|\")+"));
+
+        return listWordsFromText.size();
     }
 
     /**
