@@ -23,9 +23,10 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countSumLengthOfWords(String text) {
-        List<String> listWordsFromText= Stream.of(text)
-                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
-                .collect(Collectors.toList());
+        List<String> listWordsFromText = new ArrayList<>();
+        for(String word:text.split("(\\s|,|\\.|!|-|\")+")){
+            listWordsFromText.add(word);
+        }
         int countSumLengthOfWords = 0;
         for(int i=0;i<listWordsFromText.size();i++){
             countSumLengthOfWords = listWordsFromText.get(i).length()+countSumLengthOfWords;
@@ -41,9 +42,10 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countNumberOfWords(String text) {
-        List<String> listWordsFromText= Arrays.asList((text)
-                .split("(\\s|,|\\.|!|-|\")+"));
-
+        List<String> listWordsFromText = new ArrayList<>();
+        for(String word:text.split("(\\s|,|\\.|!|-|\")+")){
+            listWordsFromText.add(word);
+        }
         return listWordsFromText.size();
     }
 
