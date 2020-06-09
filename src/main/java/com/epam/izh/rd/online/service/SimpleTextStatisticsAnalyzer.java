@@ -23,7 +23,14 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countSumLengthOfWords(String text) {
-        return 0;
+        List<String> listWordsFromText= Stream.of(text)
+                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+                .collect(Collectors.toList());
+        int countSumLengthOfWords = 0;
+        for(int i=0;i<listWordsFromText.size();i++){
+            countSumLengthOfWords = listWordsFromText.get(i).length()+countSumLengthOfWords;
+        }
+        return countSumLengthOfWords;
     }
 
     /**
