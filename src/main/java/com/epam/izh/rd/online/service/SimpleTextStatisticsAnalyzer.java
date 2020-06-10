@@ -3,8 +3,8 @@ package com.epam.izh.rd.online.service;
 import com.epam.izh.rd.online.helper.Direction;
 
 import java.util.*;
-
-import static java.util.Collections.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Совет:
@@ -23,7 +23,15 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countSumLengthOfWords(String text) {
-        return 0;
+        List<String> listWordsFromText = new ArrayList<>();
+        for(String word:text.split("(\\s|,|\\.|!|-|\")+")){
+            listWordsFromText.add(word);
+        }
+        int countSumLengthOfWords = 0;
+        for(int i=0;i<listWordsFromText.size();i++){
+            countSumLengthOfWords = listWordsFromText.get(i).length()+countSumLengthOfWords;
+        }
+        return countSumLengthOfWords;
     }
 
     /**
@@ -34,7 +42,11 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countNumberOfWords(String text) {
-        return 0;
+        List<String> listWordsFromText = new ArrayList<>();
+        for(String word:text.split("(\\s|,|\\.|!|-|\")+")){
+            listWordsFromText.add(word);
+        }
+        return listWordsFromText.size();
     }
 
     /**
@@ -44,7 +56,11 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countNumberOfUniqueWords(String text) {
-        return 0;
+        List<String> listOfDuplicateWords = Arrays.asList((text).split("(\\s|,|\\.|!|-|\")+"));
+        HashSet<String> uniqueWordsFromList = new HashSet<>();
+        uniqueWordsFromList.addAll(listOfDuplicateWords);
+
+        return uniqueWordsFromList.size();
     }
 
     /**
@@ -57,7 +73,9 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public List<String> getWords(String text) {
-        return emptyList();
+        return Stream.of(text)
+                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -70,7 +88,10 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public Set<String> getUniqueWords(String text) {
-        return emptySet();
+
+        return Stream.of(text)
+                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -82,7 +103,14 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public Map<String, Integer> countNumberOfWordsRepetitions(String text) {
-        return emptyMap();
+
+        Map<String, Integer> unique = new TreeMap<String, Integer>();
+        String stringToArray[] = text.split("(\\s|,|\\.|!|-|\")+");
+
+        for (String str : stringToArray) {
+            unique.put(str, (unique.get(str) == null ? 1 : (unique.get(str) + 1)));
+        }
+        return unique;
     }
 
     /**
@@ -95,6 +123,21 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public List<String> sortWordsByLength(String text, Direction direction) {
-        return emptyList();
+        List<String> str = Arrays.asList(text.split("(\\s|,|\\.|!|-|\")+"));
+
+        Comparator<String> sortUpLenthString = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.length() - o2.length();
+            }
+        };
+
+        if (direction.equals(Direction.ASC)) {
+            Collections.sort(str, sortUpLenthString);
+
+        } else {
+            str.sort((o1, o2) -> Integer.compare(o2.length(), o1.length()));
+        }
+        return str;
     }
 }
