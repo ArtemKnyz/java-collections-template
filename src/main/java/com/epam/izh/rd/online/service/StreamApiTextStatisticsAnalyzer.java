@@ -59,6 +59,10 @@ public class StreamApiTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
 
     @Override
     public List<String> sortWordsByLength(String text, Direction direction) {
-        return emptyList();
+
+        return Stream.of(text)
+                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+                .sorted(Comparator.comparing(String::length))
+                .collect(Collectors.toList());
     }
 }
