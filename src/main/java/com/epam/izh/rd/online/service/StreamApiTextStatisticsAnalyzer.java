@@ -15,54 +15,62 @@ import static java.util.Collections.*;
 public class StreamApiTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
     @Override
     public int countSumLengthOfWords(String text) {
-        List<String> d = Arrays.asList(text).stream().collect(Collectors.toList());
-        Stream.of(text).collect(Collectors.toList()).size();
+        return (int) Stream.of(text.split("(\\s|,|\\.|!|-|\")+"))
+                .mapToInt(s -> s.length())
+                .sum();
 
-        return d.size();
     }
 
     @Override
     public int countNumberOfWords(String text) {
-        return (int) Stream.of(text)
-                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+        return (int) Stream.of(text.split("(\\s|,|\\.|!|-|\")+"))
                 .count();
     }
 
     @Override
     public int countNumberOfUniqueWords(String text) {
-        return (int) Stream.of(text)
-                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+        return (int) Stream.of(text.split("(\\s|,|\\.|!|-|\")+"))
                 .distinct()
                 .count();
     }
 
     @Override
     public List<String> getWords(String text) {
-        return Stream.of(text)
-                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+        return Stream.of(text.split("(\\s|,|\\.|!|-|\")+"))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Set<String> getUniqueWords(String text) {
-        return Stream.of(text)
-                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
-                .distinct()
+        return Stream.of(text.split("(\\s|,|\\.|!|-|\")+"))
                 .collect(Collectors.toSet());
     }
 
     @Override
     public Map<String, Integer> countNumberOfWordsRepetitions(String text) {
+        Map<String, Integer> countNumberOfWordsRepetitions = Stream.of(text)
+                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
+                .collect(HashMap::new, (m, c) -> {
+                    if (m.containsKey(c)) {
+                        m.put(c, m.get(c) + 1);
+                    } else {
+                        m.put(c, 1);
+                    }
+                }, HashMap::putAll);
 
-        return null;
+        return countNumberOfWordsRepetitions;
     }
 
     @Override
     public List<String> sortWordsByLength(String text, Direction direction) {
-
-        return Stream.of(text)
-                .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
-                .sorted(Comparator.comparing(String::length))
-                .collect(Collectors.toList());
+        if (direction.equals(Direction.ASC)) {
+            return Stream.of(text.split("(\\s|,|\\.|!|-|\")+"))
+                    .sorted(Comparator.comparing(String::length))
+                    .collect(Collectors.toList());
+        } else {
+            return Stream.of(text.split("(\\s|,|\\.|!|-|\")+"))
+                    .sorted((f1, f2) -> Integer.compare(f2.length(), f1.length()))
+                    .collect(Collectors.toList());
+        }
     }
 }

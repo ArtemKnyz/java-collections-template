@@ -91,7 +91,6 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
 
         return Stream.of(text)
                 .flatMap(s -> Stream.of(s.split("(\\s|,|\\.|!|-|\")+")))
-                .distinct()
                 .collect(Collectors.toSet());
     }
 
@@ -133,7 +132,7 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
             }
         };
 
-        if (direction.name().equals("ASC")) {
+        if (direction.equals(Direction.ASC)) {
             Collections.sort(str, sortUpLenthString);
 
         } else {
